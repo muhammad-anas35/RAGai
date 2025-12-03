@@ -15,15 +15,15 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-github-username.github.io',
+  url: 'https://muhammad-anas35.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/Book_RAG/',
+  baseUrl: '/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'your-github-username', // Usually your GitHub org/user name.
-  projectName: 'Book_RAG', // Usually your repo name.
+  organizationName: 'muhammad-anas35', // Usually your GitHub org/user name.
+  projectName: 'RAGai', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -44,7 +44,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/your-github-username/Book_RAG/tree/main/',
+            'https://github.com/muhammad-anas35/RAGai/tree/main/',
         },
         theme: {
           customCss: './src/css/custom.css',
