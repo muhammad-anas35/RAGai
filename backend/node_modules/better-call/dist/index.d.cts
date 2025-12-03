@@ -1,0 +1,14 @@
+import { $ as statusCodes, A as InferMiddlewareQuery, B as createInternalContext, C as InferBody, D as InferInputMethod, E as InferHeadersInput, F as InferRequest, G as serializeCookie, H as CookiePrefixOptions, I as InferRequestInput, J as BetterCallError, K as serializeSignedCookie, L as InferUse, M as InferParamInput, N as InferQuery, O as InferMethod, P as InferQueryInput, Q as makeErrorForHideStackFrame, R as InputContext, S as HTTPMethod, T as InferHeaders, U as getCookieKey, V as CookieOptions, W as parseCookies, X as ValidationError, Y as Status, Z as hideInternalStackFrames, _ as MiddlewareContext, a as EndpointBaseOptions, at as MergeObject, b as MiddlewareResponse, c as EndpointOptions, ct as UnionToIntersection, d as OpenAPIParameter, et as StandardSchemaV1, f as OpenAPISchemaType, g as Middleware, h as getHTML, i as Endpoint, it as IsEmptyObject, j as InferParam, k as InferMiddlewareBody, l as StrictEndpoint, m as generator, n as RouterConfig, nt as InferParamPath, o as EndpointBodyMethodOptions, ot as Prettify, p as Path, q as APIError, r as createRouter, rt as InferParamWildCard, s as EndpointContext, st as RequiredKeysOf, t as Router, tt as HasRequiredKeys, u as createEndpoint, v as MiddlewareInputContext, w as InferBodyInput, x as createMiddleware, y as MiddlewareOptions, z as Method } from "./router.cjs";
+
+//#region src/to-response.d.ts
+type JSONResponse = {
+  body: Record<string, any>;
+  routerResponse: ResponseInit | undefined;
+  status?: number;
+  headers?: Record<string, string> | Headers;
+  _flag: "json";
+};
+declare function toResponse(data?: any, init?: ResponseInit): Response;
+//#endregion
+export { APIError, BetterCallError, CookieOptions, CookiePrefixOptions, Endpoint, EndpointBaseOptions, EndpointBodyMethodOptions, EndpointContext, EndpointOptions, HTTPMethod, HasRequiredKeys, InferBody, InferBodyInput, InferHeaders, InferHeadersInput, InferInputMethod, InferMethod, InferMiddlewareBody, InferMiddlewareQuery, InferParam, InferParamInput, InferParamPath, InferParamWildCard, InferQuery, InferQueryInput, InferRequest, InferRequestInput, InferUse, InputContext, IsEmptyObject, JSONResponse, MergeObject, Method, Middleware, MiddlewareContext, MiddlewareInputContext, MiddlewareOptions, MiddlewareResponse, OpenAPIParameter, OpenAPISchemaType, Path, Prettify, RequiredKeysOf, Router, RouterConfig, StandardSchemaV1, Status, StrictEndpoint, UnionToIntersection, ValidationError, createEndpoint, createInternalContext, createMiddleware, createRouter, generator, getCookieKey, getHTML, hideInternalStackFrames, makeErrorForHideStackFrame, parseCookies, serializeCookie, serializeSignedCookie, statusCodes, toResponse };
+//# sourceMappingURL=index.d.cts.map

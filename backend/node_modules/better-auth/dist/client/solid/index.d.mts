@@ -1,0 +1,120 @@
+import { Xt as InferErrorCodes, Yt as InferClientAPI, en as IsSignal, qt as InferActions } from "../../index-COnelCGa.mjs";
+import "../../types-CEepZ-RG.mjs";
+import { a as LiteralNumber, c as OmitId, d as PrettifyDeep, f as Primitive, g as WithoutEmpty, h as UnionToIntersection, i as HasRequiredKeys, l as PreserveJSDoc, m as StripEmptyObjects, n as DeepPartial, o as LiteralString, p as RequiredKeysOf, r as Expand, s as LiteralUnion, t as Awaitable, u as Prettify } from "../../helper-DFzV6jvx.mjs";
+import "../../plugins-Dmw3tk5H.mjs";
+import { BetterAuthClientOptions, BetterAuthClientPlugin } from "@better-auth/core";
+import { BASE_ERROR_CODES } from "@better-auth/core/error";
+import * as _better_fetch_fetch15 from "@better-fetch/fetch";
+import { BetterFetchError } from "@better-fetch/fetch";
+import { Accessor } from "solid-js";
+export * from "nanostores";
+export * from "@better-fetch/fetch";
+
+//#region src/client/solid/index.d.ts
+type InferResolvedHooks<O extends BetterAuthClientOptions> = O extends {
+  plugins: Array<infer Plugin>;
+} ? UnionToIntersection<Plugin extends BetterAuthClientPlugin ? Plugin["getAtoms"] extends ((fetch: any) => infer Atoms) ? Atoms extends Record<string, any> ? { [key in keyof Atoms as IsSignal<key> extends true ? never : key extends string ? `use${Capitalize<key>}` : never]: () => Accessor<ReturnType<Atoms[key]["get"]>> } : {} : {} : {}> : {};
+declare function createAuthClient<Option extends BetterAuthClientOptions>(options?: Option | undefined): UnionToIntersection<InferResolvedHooks<Option>> & InferClientAPI<Option> & InferActions<Option> & {
+  useSession: () => Accessor<{
+    data: InferClientAPI<Option> extends {
+      getSession: () => Promise<infer Res>;
+    } ? Res extends {
+      data: null;
+      error: {
+        message?: string | undefined;
+        status: number;
+        statusText: string;
+      };
+    } | {
+      data: infer S;
+      error: null;
+    } ? S : Res extends Record<string, any> ? Res : never : never;
+    isPending: boolean;
+    isRefetching: boolean;
+    error: BetterFetchError | null;
+  }>;
+  $Infer: {
+    Session: NonNullable<InferClientAPI<Option> extends {
+      getSession: () => Promise<infer Res>;
+    } ? Res extends {
+      data: null;
+      error: {
+        message?: string | undefined;
+        status: number;
+        statusText: string;
+      };
+    } | {
+      data: infer S;
+      error: null;
+    } ? S : Res extends Record<string, any> ? Res : never : never>;
+  };
+  $fetch: _better_fetch_fetch15.BetterFetch<{
+    plugins: (_better_fetch_fetch15.BetterFetchPlugin | {
+      id: string;
+      name: string;
+      hooks: {
+        onSuccess(context: _better_fetch_fetch15.SuccessContext<any>): void;
+      };
+    } | {
+      id: string;
+      name: string;
+      hooks: {
+        onSuccess: ((context: _better_fetch_fetch15.SuccessContext<any>) => Promise<void> | void) | undefined;
+        onError: ((context: _better_fetch_fetch15.ErrorContext) => Promise<void> | void) | undefined;
+        onRequest: (<T extends Record<string, any>>(context: _better_fetch_fetch15.RequestContext<T>) => Promise<_better_fetch_fetch15.RequestContext | void> | _better_fetch_fetch15.RequestContext | void) | undefined;
+        onResponse: ((context: _better_fetch_fetch15.ResponseContext) => Promise<Response | void | _better_fetch_fetch15.ResponseContext> | Response | _better_fetch_fetch15.ResponseContext | void) | undefined;
+      };
+    })[];
+    cache?: RequestCache | undefined;
+    method: string;
+    headers?: (HeadersInit & (HeadersInit | {
+      accept: "application/json" | "text/plain" | "application/octet-stream";
+      "content-type": "application/json" | "text/plain" | "application/x-www-form-urlencoded" | "multipart/form-data" | "application/octet-stream";
+      authorization: "Bearer" | "Basic";
+    })) | undefined;
+    redirect?: RequestRedirect | undefined;
+    credentials?: RequestCredentials;
+    integrity?: string | undefined;
+    keepalive?: boolean | undefined;
+    mode?: RequestMode | undefined;
+    priority?: RequestPriority | undefined;
+    referrer?: string | undefined;
+    referrerPolicy?: ReferrerPolicy | undefined;
+    signal?: (AbortSignal | null) | undefined;
+    window?: null | undefined;
+    onRetry?: ((response: _better_fetch_fetch15.ResponseContext) => Promise<void> | void) | undefined;
+    hookOptions?: {
+      cloneResponse?: boolean;
+    } | undefined;
+    timeout?: number | undefined;
+    customFetchImpl: _better_fetch_fetch15.FetchEsque;
+    baseURL: string;
+    throw?: boolean | undefined;
+    auth?: ({
+      type: "Bearer";
+      token: string | Promise<string | undefined> | (() => string | Promise<string | undefined> | undefined) | undefined;
+    } | {
+      type: "Basic";
+      username: string | (() => string | undefined) | undefined;
+      password: string | (() => string | undefined) | undefined;
+    } | {
+      type: "Custom";
+      prefix: string | (() => string | undefined) | undefined;
+      value: string | (() => string | undefined) | undefined;
+    }) | undefined;
+    body?: any;
+    query?: any;
+    params?: any;
+    duplex?: "full" | "half" | undefined;
+    jsonParser: (text: string) => Promise<any> | any;
+    retry?: _better_fetch_fetch15.RetryOptions | undefined;
+    retryAttempt?: number | undefined;
+    output?: (_better_fetch_fetch15.StandardSchemaV1 | typeof Blob | typeof File) | undefined;
+    errorSchema?: _better_fetch_fetch15.StandardSchemaV1 | undefined;
+    disableValidation?: boolean | undefined;
+    disableSignal?: boolean | undefined;
+  }, unknown, unknown, {}>;
+  $ERROR_CODES: PrettifyDeep<InferErrorCodes<Option> & typeof BASE_ERROR_CODES>;
+};
+//#endregion
+export { Awaitable, DeepPartial, Expand, HasRequiredKeys, LiteralNumber, LiteralString, LiteralUnion, OmitId, PreserveJSDoc, Prettify, PrettifyDeep, Primitive, RequiredKeysOf, StripEmptyObjects, type UnionToIntersection, WithoutEmpty, createAuthClient };
