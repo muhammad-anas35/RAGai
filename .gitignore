@@ -26,5 +26,6 @@ yarn-error.log*
 
 .gemini/settings.json
 .qwen/settings.json
+.env.local.example
 .env.example
 .env
