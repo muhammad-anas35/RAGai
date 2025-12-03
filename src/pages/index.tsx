@@ -19,9 +19,8 @@ function HomepageHeader() {
             <div className={styles.heroLabel}>Physical AI & Humanoid Robotics</div>
             <Heading as="h1" className={styles.heroTitle}>
               Physical AI And Humanoid Robotics
-              <br />
-              For Smart Systems
             </Heading>
+            <div className={styles.heroAuthor}>by Muhammad Anas Asif</div>
             <p className={styles.heroSubtitle}>
               Master the cutting-edge technologies powering the next generation of intelligent robots.
               Learn ROS 2, simulation, NVIDIA Isaac, and conversational AI to build humanoid robots
@@ -49,7 +48,7 @@ export default function Home(): ReactNode {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="A textbook on Physical AI and Humanoid Robotics by Panaversity">
+      description="A textbook on Physical AI and Humanoid Robotics by Muhammad Anas Asif">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

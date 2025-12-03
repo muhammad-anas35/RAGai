@@ -8,6 +8,11 @@
 .docusaurus
 .cache-loader
 
+# Agents configration
+/sub_agents
+.gemini
+.qwen
+
 # Misc
 .DS_Store
 .env.local

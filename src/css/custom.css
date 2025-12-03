@@ -376,51 +376,74 @@ img {
    NAVBAR ENHANCEMENTS - Modern Gradient Theme
    ============================================ */
 
+/* ============================================
+   NAVBAR ENHANCEMENTS - Modern Professional Theme
+   ============================================ */
+
 .navbar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-[data-theme='dark'] .navbar {
-  background: linear-gradient(135deg, #4c1d95 0%, #5b21b6 50%, #7c3aed 100%);
-  box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3);
-}
-
-.navbar__title {
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: white !important;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.navbar__link {
-  color: rgba(255, 255, 255, 0.95) !important;
-  font-weight: 500;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  height: 4rem;
   transition: all 0.3s ease;
 }
 
-.navbar__link:hover {
-  color: white !important;
-  text-shadow: 0 2px 8px rgba(255, 255, 255, 0.5);
+[data-theme='dark'] .navbar {
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+.navbar__inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.navbar__title {
+  font-weight: 800;
+  font-size: 1.25rem;
+  background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+[data-theme='dark'] .navbar__title {
+  background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .navbar__item {
-  color: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  color: var(--ifm-color-content);
+}
+
+.navbar__link:hover,
+.navbar__item:hover {
+  color: var(--ifm-color-primary);
+  background-color: var(--ifm-color-emphasis-100);
 }
 
 /* Logo Size Constraint */
 .navbar__logo {
-  height: 32px;
-  max-height: 32px;
+  height: 36px;
+  max-height: 36px;
   width: auto;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  margin-right: 0.75rem;
 }
 
 .navbar__logo img {
-  height: 32px;
-  max-height: 32px;
+  height: 100%;
   width: auto;
   object-fit: contain;
 }
@@ -449,24 +472,53 @@ img {
    FOOTER ENHANCEMENTS
    ============================================ */
 
+/* ============================================
+   FOOTER ENHANCEMENTS - Clean & Professional
+   ============================================ */
+
 .footer {
-  background: linear-gradient(135deg, var(--ifm-color-primary-darkest) 0%, var(--ifm-color-primary-darker) 100%);
-  color: white;
+  background-color: #0F172A;
+  color: #F1F5F9;
+  padding-top: 4rem;
+  padding-bottom: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .footer__title {
-  font-weight: 600;
-  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94A3B8;
+  margin-bottom: 1rem;
+}
+
+.footer__item {
+  margin-bottom: 0.75rem;
 }
 
 .footer__link-item {
-  color: rgba(255, 255, 255, 0.8);
-  transition: color 0.2s ease;
+  color: #CBD5E1;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .footer__link-item:hover {
-  color: white;
-  text-decoration: underline;
+  color: #60A5FA;
+  text-decoration: none;
+  transform: translateX(2px);
+}
+
+.footer__copyright {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  color: #64748B;
+  font-size: 0.9rem;
 }
 
 /* ============================================
