@@ -40,9 +40,10 @@ export default function Signup(): JSX.Element {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/auth/signup/email', {
+            const res = await fetch('http://localhost:4000/api/auth/signup/email', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({
                     email: formData.email,
                     password: formData.password,

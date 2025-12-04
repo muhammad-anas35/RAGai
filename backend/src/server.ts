@@ -6,11 +6,33 @@ import * as schema from '../../../src/db/schema';
 import { eq } from 'drizzle-orm';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config({ path: '.env.local' });
+// Load environment variables from root .env.local
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const envPath = path.resolve(__dirname, '../../../.env.local');
+dotenv.config({ path: envPath });
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+
+// Validate required environment variables
+if (!process.env.DATABASE_URL) {
+    console.error('❌ ERROR: DATABASE_URL not set in .env.local');
+    console.error('Please create .env.local with DATABASE_URL from Neon');
+    process.exit(1);
+}
+
+if (!process.env.BETTER_AUTH_SECRET) {
+    console.error('❌ ERROR: BETTER_AUTH_SECRET not set in .env.local');
+    console.error('Generate with: openssl rand -hex 32');
+    process.exit(1);
+}
+
+console.log('✅ Environment variables loaded');
+console.log('📝 Database URL configured');
+console.log('🔐 Auth secret configured');
 
 // ========================================
 // TYPES
@@ -67,6 +89,33 @@ app.get('/api/health', (req, res) => {
 });
 
 /**
+ * Database Health Check
+ * GET /api/health/db
+ */
+app.get('/api/health/db', async (req, res) => {
+    try {
+        console.log('[DB-CHECK] Testing database connection...');
+        
+        const result = await db.select().from(schema.users).limit(1);
+        
+        console.log('[DB-CHECK] Database connection successful');
+        res.json({ 
+            status: 'ok', 
+            database: 'connected',
+            timestamp: new Date().toISOString()
+        });
+    } catch (error: any) {
+        console.error('[DB-CHECK] Database connection failed:', error.message);
+        res.status(503).json({ 
+            status: 'error',
+            database: 'disconnected',
+            error: error.message,
+            message: 'Cannot connect to database. Check DATABASE_URL in .env.local'
+        });
+    }
+});
+
+/**
  * Get current session
  * GET /api/auth/session
  */
@@ -100,20 +149,26 @@ app.post('/api/auth/signup/email', async (req: AuthRequest, res: Response) => {
     try {
         const { email, password, name } = req.body;
 
+        console.log('[SIGNUP] Request received:', { email, name, passwordLength: password?.length });
+
         // Validate input
         if (!email || !password) {
+            console.warn('[SIGNUP] Missing email or password');
             return res.status(400).json({ error: 'Email and password required' });
         }
 
         if (password.length < 8) {
+            console.warn('[SIGNUP] Password too short');
             return res.status(400).json({ error: 'Password must be at least 8 characters' });
         }
 
         if (!email.includes('@')) {
+            console.warn('[SIGNUP] Invalid email format');
             return res.status(400).json({ error: 'Invalid email format' });
         }
 
         // Check if user already exists
+        console.log('[SIGNUP] Checking if user exists:', email.toLowerCase());
         const existingUser = await db
             .select()
             .from(schema.users)
@@ -121,10 +176,12 @@ app.post('/api/auth/signup/email', async (req: AuthRequest, res: Response) => {
             .limit(1);
 
         if (existingUser.length > 0) {
+            console.warn('[SIGNUP] User already exists:', email);
             return res.status(409).json({ error: 'User already exists' });
         }
 
         // Hash password
+        console.log('[SIGNUP] Hashing password');
         const passwordHash = crypto
             .createHash('sha256')
             .update(password + process.env.BETTER_AUTH_SECRET)
@@ -132,6 +189,7 @@ app.post('/api/auth/signup/email', async (req: AuthRequest, res: Response) => {
 
         // Create user
         const userId = crypto.randomBytes(16).toString('hex');
+        console.log('[SIGNUP] Creating user with ID:', userId);
         
         await db.insert(schema.users).values({
             id: userId,
@@ -143,16 +201,21 @@ app.post('/api/auth/signup/email', async (req: AuthRequest, res: Response) => {
             updatedAt: new Date(),
         });
 
+        console.log('[SIGNUP] User created successfully');
+
         // Create session token
         const sessionToken = crypto.randomBytes(32).toString('hex');
         const sessionId = crypto.randomBytes(16).toString('hex');
         
+        console.log('[SIGNUP] Creating session');
         await db.insert(schema.sessions).values({
             id: sessionId,
             userId,
             expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
             createdAt: new Date(),
         });
+
+        console.log('[SIGNUP] Session created');
 
         // Set cookie
         res.cookie('better-auth.session_token', sessionToken, {
@@ -161,6 +224,8 @@ app.post('/api/auth/signup/email', async (req: AuthRequest, res: Response) => {
             path: '/',
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
+
+        console.log('[SIGNUP] Cookie set, sending success response');
 
         res.status(201).json({ 
             success: true,
@@ -173,9 +238,17 @@ app.post('/api/auth/signup/email', async (req: AuthRequest, res: Response) => {
             redirect: '/'
         });
 
-    } catch (error) {
-        console.error('Signup error:', error);
-        res.status(500).json({ error: 'Signup failed. Please try again.' });
+    } catch (error: any) {
+        console.error('[SIGNUP ERROR]', {
+            message: error.message,
+            code: error.code,
+            detail: error.detail,
+            stack: error.stack
+        });
+        res.status(500).json({ 
+            error: 'Signup failed. Please try again.',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 });
 
@@ -188,11 +261,15 @@ app.post('/api/auth/signin/email', async (req: AuthRequest, res: Response) => {
     try {
         const { email, password } = req.body;
 
+        console.log('[LOGIN] Request received:', { email });
+
         if (!email || !password) {
+            console.warn('[LOGIN] Missing email or password');
             return res.status(400).json({ error: 'Email and password required' });
         }
 
         // Find user
+        console.log('[LOGIN] Finding user:', email.toLowerCase());
         const users = await db
             .select()
             .from(schema.users)
@@ -200,15 +277,73 @@ app.post('/api/auth/signin/email', async (req: AuthRequest, res: Response) => {
             .limit(1);
 
         if (users.length === 0) {
+            console.warn('[LOGIN] User not found:', email);
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
         const user = users[0];
+        console.log('[LOGIN] User found, verifying password');
 
         // Verify password
         const passwordHash = crypto
             .createHash('sha256')
             .update(password + process.env.BETTER_AUTH_SECRET)
+            .digest('hex');
+
+        if (passwordHash !== user.passwordHash) {
+            console.warn('[LOGIN] Invalid password for:', email);
+            return res.status(401).json({ error: 'Invalid email or password' });
+        }
+
+        console.log('[LOGIN] Password verified, creating session');
+
+        // Create session
+        const sessionToken = crypto.randomBytes(32).toString('hex');
+        const sessionId = crypto.randomBytes(16).toString('hex');
+        
+        await db.insert(schema.sessions).values({
+            id: sessionId,
+            userId: user.id,
+            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            createdAt: new Date(),
+        });
+
+        console.log('[LOGIN] Session created, setting cookie');
+
+        // Set cookie
+        res.cookie('better-auth.session_token', sessionToken, {
+            httpOnly: true,
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+
+        console.log('[LOGIN] Success for:', email);
+
+        res.status(200).json({ 
+            success: true,
+            message: 'Logged in successfully',
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+            },
+            redirect: '/'
+        });
+
+    } catch (error: any) {
+        console.error('[LOGIN ERROR]', {
+            message: error.message,
+            code: error.code,
+            detail: error.detail,
+            stack: error.stack
+        });
+        res.status(500).json({ 
+            error: 'Login failed. Please try again.',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
             .digest('hex');
 
         if (passwordHash !== user.passwordHash) {
@@ -408,35 +543,58 @@ app.use((req: express.Request, res: express.Response) => {
 // START SERVER
 // ========================================
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`
-╔═══════════════════════════════════════╗
-║    📚 Book RAG Backend Server         ║
-║         (Authentication API)          ║
-╚═══════════════════════════════════════╝
+╔═══════════════════════════════════════════════════════════╗
+║    📚 Book RAG Backend Server - Authentication API       ║
+╚═══════════════════════════════════════════════════════════╝
 
 🚀 Server running at: http://localhost:${PORT}
-📡 Frontend expects: ${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}
-🗄️  Database: ${process.env.DATABASE_URL ? '✅ Connected' : '❌ Missing'}
+📡 Frontend URL: ${process.env.BETTER_AUTH_URL || 'http://localhost:3000'}
 
-Available Endpoints:
-  PUBLIC:
-  ✅ GET    /api/health               - Health check
-  ✅ GET    /api/auth/check           - Check auth status
-  ✅ POST   /api/auth/signup/email    - Create account
-  ✅ POST   /api/auth/signin/email    - Login
+🔧 Environment:
+  ✅ DATABASE_URL configured
+  ✅ BETTER_AUTH_SECRET configured
+  ✅ Node.js environment ready
+
+📊 Available Endpoints:
+
+  PUBLIC (No login required):
+  ✅ GET    /api/health               - Server health check
+  ✅ GET    /api/health/db            - Database health check
+  ✅ GET    /api/auth/check           - Check authentication status
+  ✅ POST   /api/auth/signup/email    - Create new account
+  ✅ POST   /api/auth/signin/email    - Login with email/password
   
-  PROTECTED (require login):
-  🔐 POST   /api/auth/signout         - Logout
-  🔐 GET    /api/auth/session         - Get session info
-  🔐 GET    /api/auth/me              - Get user info
-  🔐 GET    /api/dashboard            - User dashboard
-  🔐 POST   /api/chat                 - Send message
-  🔐 GET    /api/chat/history         - Get chat history
+  PROTECTED (Login required):
+  🔐 POST   /api/auth/signout         - Logout and clear session
+  🔐 GET    /api/auth/session         - Get current session info
+  🔐 GET    /api/auth/me              - Get authenticated user info
+  🔐 GET    /api/dashboard            - User dashboard data
+  🔐 POST   /api/chat                 - Send message to RAG chatbot
+  🔐 GET    /api/chat/history         - Get user's chat history
 
-🔐 Protected endpoints require valid session cookie
+🔒 Security:
+  ✅ HTTPOnly cookies (XSS protected)
+  ✅ CORS enabled for frontend
+  ✅ Password hashing with SHA256
+  ✅ 7-day session expiry
+
+⚠️  DIAGNOSTICS:
+  To test database connection: curl http://localhost:${PORT}/api/health/db
+  Check frontend CORS: Verify ${process.env.BETTER_AUTH_URL} in browser console
 
     `);
+
+    // Test database connection on startup
+    try {
+        const testQuery = await db.select().from(schema.users).limit(1);
+        console.log('✅ Database connection verified');
+    } catch (error: any) {
+        console.error('❌ WARNING: Database connection failed!');
+        console.error('   Error:', error.message);
+        console.error('   Please verify DATABASE_URL in .env.local');
+    }
 });
 
 export default app;

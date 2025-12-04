@@ -17,9 +17,10 @@ export default function Login(): JSX.Element {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/auth/signin/email', {
+            const res = await fetch('http://localhost:4000/api/auth/signin/email', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
                 body: JSON.stringify({ email, password }),
             });
 
