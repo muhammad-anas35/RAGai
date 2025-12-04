@@ -27,7 +27,10 @@ export interface ChatResponse {
     error?: string;
 }
 
-const API_BASE_URL = 'http://localhost:4000';
+// Use relative URL for Vercel deployment, absolute for local dev
+const API_BASE_URL = typeof window !== 'undefined' && window.location.hostname !== 'localhost'
+    ? ''
+    : 'http://localhost:4000';
 
 /**
  * Send a chat message and get AI response
