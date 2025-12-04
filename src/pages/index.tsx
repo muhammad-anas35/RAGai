@@ -1,60 +1,67 @@
 import type { ReactNode } from 'react';
-import clsx from 'clsx';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { useHistory } from '@docusaurus/router';
 import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import WhatYouWillLearn from '@site/src/components/WhatYouWillLearn';
-import Heading from '@theme/Heading';
-
 import styles from './index.module.css';
+import HomepageFeatures from '../components/HomepageFeatures';
 
-function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
+export default function Home(): ReactNode {
+  const history = useHistory();
+
+  const handleGetStarted = () => {
+    history.push('/docs/intro');
+  };
+
+  const handleLogin = () => {
+    history.push('/login');
+  };
+
+  const handleSignUp = () => {
+    history.push('/signup');
+  };
+
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <div className="row">
-          <div className={clsx('col col--6', styles.heroContent)}>
-            <div className={styles.heroLabel}>Physical AI & Humanoid Robotics</div>
-            <Heading as="h1" className={styles.heroTitle}>
-              Physical AI And Humanoid Robotics
-              <br />
-              For Smart Systems
-            </Heading>
-            <p className={styles.heroSubtitle}>
-              Master the cutting-edge technologies powering the next generation of intelligent robots.
-              Learn ROS 2, simulation, NVIDIA Isaac, and conversational AI to build humanoid robots
+    <Layout
+      title="Physical AI & Humanoid Robotics"
+      description="Master the cutting-edge technologies powering the next generation of intelligent robots">
+      <div className={styles.heroBanner}>
+        <div className={styles.heroContainer}>
+          <div className={styles.heroLeft}>
+            <p className={styles.heroLabel}>PHYSICAL AI & HUMANOID ROBOTICS</p>
+            <h1 className={styles.heroTitle}>Physical AI And Humanoid Robotics</h1>
+            <p className={styles.heroAuthor}>By Muhammad Anas Asif</p>
+            <p className={styles.heroDescription}>
+              Master the cutting-edge technologies powering the next generation of intelligent robots. 
+              Learn ROS 2, simulation, NVIDIA Isaac, and conversational AI to build humanoid robots 
               that interact naturally with the physical world.
             </p>
-            <div className={styles.buttons}>
-              <Link
-                className="button button--secondary button--lg"
-                to="/docs/intro">
+            
+            <div className={styles.buttonsSection}>
+              <button className={`${styles.button} ${styles.primaryBtn}`} onClick={handleGetStarted}>
                 Start Reading
-              </Link>
+              </button>
+              
+              <div className={styles.authButtons}>
+                <button className={`${styles.button} ${styles.loginBtn}`} onClick={handleLogin}>
+                  <span>Login</span>
+                </button>
+                <button className={`${styles.button} ${styles.signupBtn}`} onClick={handleSignUp}>
+                  <span>Sign Up</span>
+                </button>
+              </div>
             </div>
           </div>
-          <div className={clsx('col col--6', styles.bookCover)}>
-            <img src="img/book-cover.png" alt="Book Cover" />
+          
+          <div className={styles.heroRight}>
+            <img 
+              src="/img/book-cover.png" 
+              alt="Physical AI Book Cover" 
+              className={styles.robotImage}
+            />
           </div>
         </div>
       </div>
-    </header>
-  );
-}
-
-export default function Home(): ReactNode {
-  const { siteConfig } = useDocusaurusContext();
-  return (
-    <Layout
-      title={`${siteConfig.title}`}
-      description="A textbook on Physical AI and Humanoid Robotics by Panaversity">
-      <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-        <WhatYouWillLearn />
-      </main>
+      
+      <HomepageFeatures />
     </Layout>
   );
 }

@@ -1,0 +1,42 @@
+{
+  "name": "book-rag-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Book RAG authentication and RAG pipeline",
+  "main": "dist/server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev:all": "concurrently \"npm start\" \"npm run dev --prefix ..\"",
+    "type-check": "tsc --noEmit",
+    "ingest": "tsx src/scripts/run-ingestion.ts"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@neondatabase/serverless": "^1.0.2",
+    "@qdrant/js-client-rest": "^1.9.0",
+    "better-auth": "^1.2.2",
+    "cors": "^2.8.5",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^17.2.3",
+    "drizzle-orm": "^0.38.3",
+    "express": "^4.21.2",
+    "gray-matter": "^4.0.3",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^20.15.0",
+    "@types/cors": "^2.8.17",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/uuid": "^10.0.0",
+    "typescript": "^5.6.2",
+    "tsx": "^4.19.2",
+    "concurrently": "^8.2.2",
+    "drizzle-kit": "^0.31.7"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

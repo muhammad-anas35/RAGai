@@ -1,5 +1,5 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
@@ -73,7 +73,7 @@ const config: Config = {
           label: 'Textbook',
         },
         {
-          href: 'https://github.com/your-github-username/Book_RAG',
+          href: 'https://github.com/muhammad-anas35',
           label: 'GitHub',
           position: 'right',
         },
@@ -89,22 +89,30 @@ const config: Config = {
               label: 'Introduction',
               to: '/docs/intro',
             },
+            {
+              label: 'Chapter 1: Foundations',
+              to: '/docs/physical-ai-book/intro/foundations',
+            },
+            {
+              label: 'Chapter 2: ROS 2',
+              to: '/docs/physical-ai-book/chapter2/ros2-architecture',
+            },
           ],
         },
         {
           title: 'Community',
           items: [
             {
-              label: 'Panaversity',
-              href: 'https://www.panaversity.com/',
+              label: 'Portfolio Website',
+              href: 'https://muhammad-anas-portfolio1.vercel.app/',
             },
             {
-              label: 'Discord',
-              href: 'https://discord.gg/panaverse',
+              label: 'Twitter profile',
+              href: 'https://x.com/muhammad_anas35',
             },
             {
-              label: 'Twitter',
-              href: 'https://twitter.com/panaverse_dao',
+              label: 'Learning Channel',
+              href: 'https://www.youtube.com/@panaverse',
             },
           ],
         },
@@ -112,13 +120,21 @@ const config: Config = {
           title: 'More',
           items: [
             {
-              label: 'GitHub',
-              href: 'https://github.com/your-github-username/Book_RAG',
+              label: 'GitHub Repository',
+              href: 'https://github.com/muhammad-anas35/RAGai',
+            },
+            {
+              label: 'LinkedIn',
+              href: 'https://www.linkedin.com/in/muhammad-anas35/',
+            },
+            {
+              label: 'Instagram',
+              href: 'https://www.instagram.com/muhammad_anas35/',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Panaversity. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} RAGai All rights reserved by Muhammad Anas Asif. `,
     },
     prism: {
       theme: prismThemes.github,
