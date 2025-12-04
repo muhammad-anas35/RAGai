@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+bower_components/
+
+# Build output
+dist/
+build/
+.docusaurus/
+.cache/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+*.log
+
+# Minified files
+*.min.js
+*.min.css
+
+# Generated files
+*.tsbuildinfo
+
+# Changelog
+CHANGELOG.md

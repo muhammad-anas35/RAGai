@@ -27,3 +27,13 @@ export const chatHistory = pgTable('chat_history', {
     response: text('response').notNull(),
     createdAt: timestamp('created_at').defaultNow(),
 });
+
+// Refresh tokens table for JWT
+export const refreshTokens = pgTable('refresh_tokens', {
+    id: text('id').primaryKey(),
+    userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }).notNull(),
+    token: text('token').notNull().unique(),
+    expiresAt: timestamp('expires_at').notNull(),
+    issuedAt: timestamp('issued_at').defaultNow(),
+    revoked: boolean('revoked').default(false),
+});

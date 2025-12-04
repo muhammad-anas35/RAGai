@@ -13,7 +13,7 @@ export const auth = betterAuth({
     }),
     emailAndPassword: {
         enabled: true,
-        requireEmailVerification: false, // Set to true in production
+        requireEmailVerification: true, // Set to true in production
     },
     session: {
         expiresIn: 60 * 60 * 24 * 7, // 7 days
